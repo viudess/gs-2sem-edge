@@ -1,118 +1,186 @@
 # 🧠 Pragma Focus Pod – Projeto IoT
 
-Esse repositório corresponde ao módulo de hardware e software do **Pragma Focus Pod**, uma extensão física da plataforma **Pragma – Otimizador de Rotina**, projetada para monitorar foco, presença, ambiente e sessões de trabalho/estudo.
+Este repositório contém o módulo de hardware e software do **Pragma Focus Pod**, uma extensão física da plataforma **Pragma – Otimizador de Rotina**, projetada para monitorar foco, presença, ambiente e sessões de trabalho/estudo.
 
 ---
 
 ## 👥 Participantes do Grupo
 
-- **Eduardo Viudes** – RM: 564075  
-- **Frederico de Paula** – RM: 562109 
-- **Victor Tadashi** – RM: 563582  
+- **Eduardo Viudes** – RM: 564075
+- **Frederico de Paula** – RM: 562109
+- **Victor Tadashi** – RM: 563582
 
 ---
 
 ## 🎯 Objetivo
 
-Criar um dispositivo de mesa inteligente que:
+Criar um dispositivo inteligente que:
 
-- Detecta presença do usuário via sensor ultrassônico  
-- Monitora qualidade do ambiente (temperatura, umidade)  
-- Gerencia sessões (foco / pausa) automaticamente  
-- Simula nível de foco cognitivo  
-- Comunica-se via MQTT/FIWARE-IoT-Agent para um dashboard  
-- Fornece feedback visual (OLED + Neopixel) e sonoro (buzzer)
+- Detecta presença via sensor ultrassônico  
+- Monitora temperatura e umidade  
+- Gerencia sessões de foco  
+- Simula o nível de foco cognitivo  
+- Envia dados ao FIWARE (Orion + IoT-Agent)  
+- Fornece feedback por LED, OLED e buzzer  
+- Funciona com **Dashboard Web** e **MyMQTT**
 
 ---
 
 ## 🧩 Tecnologias utilizadas
 
-- ESP32  
-- DHT22  
-- HC-SR04  
-- SSD1306 OLED 128×64  
-- NeoPixel  
-- Buzzer  
-- MQTT (Ultralight 2.0 ou JSON MQTT)  
-- FIWARE IoT-Agent + Orion  
-- Dashboard em HTML/JS
+- ESP32
+- Sensor DHT22
+- Ultrassônico HC-SR04
+- Display OLED SSD1306
+- NeoPixel RGB
+- Buzzer
+- MQTT (Ultralight 2.0)
+- FIWARE IoT-Agent JSON/UL
+- Orion Context Broker
+- HTML, CSS e JavaScript
 
 ---
 
-## 🔧 Projeto no Wokwi
+# 🔧 Projetos no Wokwi
 
-<img width="579" height="533" alt="image" src="https://github.com/user-attachments/assets/fd336787-b91c-4648-b411-a111c46af3ec" />
+Cada projeto funciona com um sistema específico:
 
-[![Projeto funcional com Dashboard](https://img.shields.io/badge/Projeto%20funcional%20com%20Dashboard-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448160488841329665)
-[![Projeto funcional com MyMQTT](https://img.shields.io/badge/Projeto%20funcional%20com%20MyMQTT-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448058082408030209)
+### ▶ Projeto funcional com Dashboard (Interface Web)
+[![Dashboard Funcionando](https://img.shields.io/badge/Projeto%20funcional%20com%20Dashboard-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448160488841329665)
+
+### ▶ Projeto funcional com MyMQTT (Start/End funcionando)
+[![MyMQTT Funcionando](https://img.shields.io/badge/Projeto%20funcional%20com%20MyMQTT-C0392B?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448058082408030209)
 
 ---
 
-## 💾 Como usar o projeto
+# 📡 Como usar o projeto IoT no ESP32
 
 ### 1. Monte o hardware
-Conecte todos os sensores conforme o esquema acima.  
-Ligue o ESP32 no USB do computador.
+O esquema está disponível no Wokwi acima.
 
----
+### 2. Configure o código do ESP32
+No início do código, ajustar:
 
-## 2. Configure o código do ESP32
+WIFI, broker, client ID e tópicos FIWARE:
 
-No início do código, defina:
+const char* WIFI_SSID = "SeuWifi";
+const char* WIFI_PASS = "Senha";
+const char* MQTT_BROKER = "44.223.43.74";
 
-- Rede WiFi  
-- Broker MQTT  
-- Tópicos (segundo a estrutura do FIWARE ou Mosquitto)
+const char* TOPIC_SUB = "TEF/device014/cmd";
+const char* TOPIC_ATTR_T = "TEF/device014/attrs/t";
+const char* TOPIC_ATTR_H = "TEF/device014/attrs/h";
+const char* TOPIC_ATTR_D = "TEF/device014/attrs/d";
+const char* TOPIC_ATTR_F = "TEF/device014/attrs/f";
+const char* TOPIC_ATTR_ST = "TEF/device014/attrs/s";
 
-Exemplo:
-
-const char* WIFI_SSID = "SeuWifi";  
-const char* WIFI_PASS = "Senha";  
-const char* MQTT_BROKER = "44.223.43.74";  
-const char* TOPIC_PUB = "TEF/device014/attrs/b";  
-const char* TOPIC_SUB = "TEF/device014/cmd";  
 const char* CLIENT_ID = "fiware_014";
 
 O ESP32:
 
-- **Publica** temperatura, umidade, presença, nível de foco  
-- **Recebe** comandos como start_session, end_session, pause, resume
+📤 Publica temperatura, umidade, presença, foco, distância e status  
+📥 Recebe comandos: **start**, **stop**, **pause**, **resume**
 
 ---
 
-## 3. Executando o sistema
+# 🖥 Parte 1 — Dashboard Web (Interface)
 
-1. Abra o **Arduino IDE**  
-2. Carregue o código no ESP32  
-3. Abra o **Serial Monitor**  
-4. Verifique:  
-   - WiFi conectando  
-   - MQTT conectando  
-   - Publicação dos dados  
-5. Abra o dashboard / interface web  
-6. Veja em tempo real:  
-   - Temperatura  
-   - Umidade  
-   - Presença  
-   - Nível de foco  
-   - Status da sessão
+A interface lê dados diretamente do Orion:
+
+GET http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014
+
+E filtra valores UL2.0 do tipo:
+
+t|23.5  
+h|40.2  
+d|31.0  
+f|78  
+st|active
+
+### ✔ Como fazer o Dashboard funcionar
+
+1. Abra este projeto (azul):  
+   https://wokwi.com/projects/448160488841329665
+
+2. Rode o ESP32 → verifique no Serial:  
+   - Conexão WiFi  
+   - Conexão ao MQTT  
+   - Publicação dos atributos
+
+3. Abra o Dashboard em um navegador  
+4. Confira se os dados aparecem:
+
+- Temperatura  
+- Umidade  
+- Distância  
+- Presença (distância < 40 cm → SIM)  
+- Foco  
+- Status  
 
 ---
 
-## 4. Dashboard / Interface Web
+# 📱 Parte 2 — Funcionamento com MyMQTT
 
-<img width="618" height="671" alt="image" src="https://github.com/user-attachments/assets/086401eb-b634-4ad5-9084-71f9c010fd12" />
+Este outro projeto funciona com UL2.0 direto no MQTT:
 
-A interface utiliza:
+▶ Projeto vermelho:  
+https://wokwi.com/projects/448058082408030209
 
-- HTML  
-- CSS  
-- JavaScript  
-- fetch() para receber dados do FIWARE / Orion  
-- Botões para enviar comandos (start, end)
+### ✔ Como testar no MyMQTT
 
-Exemplo de chamada:
+1. App MyMQTT → Adicionar conexão:
 
-fetch("http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014")
+Broker: test.mosquitto.org  
+Porta: 1883  
+
+2. Inscrever no tópico:
+
+- pragma/focuspod/env/user1
+- pragma/focuspod/focus_level/user1
+- pragma/focuspod/presence/user1
+- pragma/focuspod/status/user1
+
+3. Publicar: 
+
+- Tópico:
+   - pragma/focuspod/cmd/user1
+- Mensagens:
+   - {"action":"start_session","type":"focus","duration":25}
+   - {"action":"end_session"}
+
+O dispositivo responde imediatamente.
+
+---
+
+# 📄 Como funciona o sistema completo
+
+### ESP32 faz:
+- Lê sensores (DHT22 + HC-SR04)  
+- Calcula presença pela distância (< 40 cm)  
+- Atualiza nível de foco  
+- Publica via UL2.0  
+- Recebe start/stop do IoT-Agent  
+
+### Dashboard faz:
+- Consulta Orion a cada 3s  
+- Remove prefixos UL (t|, h|, f|, …)  
+- Tradução de distância → presença  
+
+### MyMQTT faz:
+- Envia mensagens diretas  
+- Testa rápido o funcionamento do fluxo MQTT
+- Envia comandos para o ESP32
+
+---
+
+# ✔ Conclusão
+
+Este repositório contém:
+
+- Hardware ESP32 totalmente funcional  
+- Versão compatível com Dashboard Web  
+- Versão compatível com MyMQTT  
+- Integração FIWARE completa  
+- Suporte para sensores, foco cognitivo e sessões  
 
 ---
