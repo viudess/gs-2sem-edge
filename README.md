@@ -43,7 +43,8 @@ Criar um dispositivo de mesa inteligente que:
 
 <img width="579" height="533" alt="image" src="https://github.com/user-attachments/assets/fd336787-b91c-4648-b411-a111c46af3ec" />
 
-[![Abrir no Wokwi](https://img.shields.io/badge/▶%20Abrir%20no%20Wokwi-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448160488841329665)
+[![Projeto funcional com Dashboard](https://img.shields.io/badge/Projeto%20funcional%20com%20Dashboard-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448160488841329665)
+[![Projeto funcional com MyMQTT](https://img.shields.io/badge/Projeto%20funcional%20com%20MyMQTT-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448058082408030209)
 
 ---
 
@@ -100,6 +101,8 @@ O ESP32:
 
 ## 4. Dashboard / Interface Web
 
+<img width="618" height="671" alt="image" src="https://github.com/user-attachments/assets/086401eb-b634-4ad5-9084-71f9c010fd12" />
+
 A interface utiliza:
 
 - HTML  
@@ -111,18 +114,5 @@ A interface utiliza:
 Exemplo de chamada:
 
 fetch("http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014")
-
----
-
-## 📸 Imagens do Projeto
-
-As imagens devem ser adicionadas na pasta `/assets` no repositório.  
-Exemplos sugeridos:
-
-- Foto do dispositivo montado  
-- Foto da tela OLED com as informações  
-- Tela da interface web funcionando  
-- Fluxo do MQTT (diagrama)  
-- Esquema elétrico real do circuito  
 
 ---
