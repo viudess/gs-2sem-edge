@@ -1,1 +1,149 @@
-# gs-2sem-edge
+# 🧠 Pragma Focus Pod – Projeto IoT
+
+Esse repositório corresponde ao módulo de hardware e software do **Pragma Focus Pod**, uma extensão física da plataforma **Pragma – Otimizador de Rotina**, projetada para monitorar foco, presença, ambiente e sessões de trabalho/estudo.
+
+---
+
+## 👥 Participantes do Grupo
+
+- **Eduardo Viudes** – RM: 564075  
+- **Frederico de Paula** – RM: 562109 
+- **Victor Tadashi** – RM: 563582  
+
+---
+
+## 🎯 Objetivo
+
+Criar um dispositivo de mesa inteligente que:
+
+- Detecta presença do usuário via sensor ultrassônico  
+- Monitora qualidade do ambiente (temperatura, umidade)  
+- Gerencia sessões (foco / pausa) automaticamente  
+- Simula nível de foco cognitivo  
+- Comunica-se via MQTT/FIWARE-IoT-Agent para um dashboard  
+- Fornece feedback visual (OLED + Neopixel) e sonoro (buzzer)
+
+---
+
+## 🧩 Tecnologias utilizadas
+
+- ESP32  
+- DHT22  
+- HC-SR04  
+- SSD1306 OLED 128×64  
+- NeoPixel  
+- Buzzer  
+- MQTT (Ultralight 2.0 ou JSON MQTT)  
+- FIWARE IoT-Agent + Orion  
+- Dashboard em HTML/JS
+
+---
+
+## 🔧 Esquema de montagem
+
+**Sensor / Atuador → Pino ESP32**
+
+- DHT22 → GPIO15  
+- HC-SR04 TRIG → GPIO5  
+- HC-SR04 ECHO → GPIO18  
+- NeoPixel DIN → GPIO4  
+- Buzzer → GPIO19  
+- OLED I2C SDA → GPIO21  
+- OLED I2C SCL → GPIO22  
+
+**Imagens de referência (não são fotos do projeto):**  
+https://esp32io.com/images/tutorial/esp32-ultrasonic-sensor-piezo-buzzer-wiring-diagram.jpg  
+https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP32_OLED.png  
+https://www.circuitschools.com/wp-content/uploads/2021/02/Circuit-Diagram-interfacing-OLED-display-with-ESP32.webp
+
+---
+
+## 💾 Como usar o projeto
+
+### 1. Monte o hardware
+Conecte todos os sensores conforme o esquema acima.  
+Ligue o ESP32 no USB do computador.
+
+---
+
+## 2. Configure o código do ESP32
+
+No início do código, defina:
+
+- Rede WiFi  
+- Broker MQTT  
+- Tópicos (segundo a estrutura do FIWARE ou Mosquitto)
+
+Exemplo:
+
+const char* WIFI_SSID = "SeuWifi";  
+const char* WIFI_PASS = "Senha";  
+const char* MQTT_BROKER = "44.223.43.74";  
+const char* TOPIC_PUB = "TEF/device014/attrs/b";  
+const char* TOPIC_SUB = "TEF/device014/cmd";  
+const char* CLIENT_ID = "fiware_014";
+
+O ESP32:
+
+- **Publica** temperatura, umidade, presença, nível de foco  
+- **Recebe** comandos como start_session, end_session, pause, resume
+
+---
+
+## 3. Executando o sistema
+
+1. Abra o **Arduino IDE**  
+2. Carregue o código no ESP32  
+3. Abra o **Serial Monitor**  
+4. Verifique:  
+   - WiFi conectando  
+   - MQTT conectando  
+   - Publicação dos dados  
+5. Abra o dashboard / interface web  
+6. Veja em tempo real:  
+   - Temperatura  
+   - Umidade  
+   - Presença  
+   - Nível de foco  
+   - Status da sessão
+
+---
+
+## 4. Dashboard / Interface Web
+
+A interface utiliza:
+
+- HTML  
+- CSS  
+- JavaScript  
+- fetch() para receber dados do FIWARE / Orion  
+- Botões para enviar comandos (start, end)
+
+Exemplo de chamada:
+
+fetch("http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014")
+
+---
+
+## 📸 Imagens do Projeto
+
+As imagens devem ser adicionadas na pasta `/assets` no repositório.  
+Exemplos sugeridos:
+
+- Foto do dispositivo montado  
+- Foto da tela OLED com as informações  
+- Tela da interface web funcionando  
+- Fluxo do MQTT (diagrama)  
+- Esquema elétrico real do circuito  
+
+---
+
+## 📦 Estrutura do repositório
+
+/  
+├── esp32/            → Código do ESP32  
+├── interface/        → Dashboard Web  
+├── assets/           → Imagens do projeto  
+└── README.md         → Este arquivo
+
+---
