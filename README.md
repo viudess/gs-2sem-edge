@@ -88,7 +88,7 @@ O ESP32:
 
 # 🖥 Parte 1 — Dashboard Web (Interface)
 
-<img width="545" height="646" alt="image" src="https://github.com/user-attachments/assets/ab811f74-8b93-4bd4-a0d6-2be6ef391b3a" />
+<img width="572" height="584" alt="image" src="https://github.com/user-attachments/assets/7cd45e2e-f107-4bda-9a6f-31b6b966f051" />
 
 A interface lê dados diretamente do Orion:
 
