@@ -43,6 +43,8 @@ Criar um dispositivo inteligente que:
 
 # 🔧 Projetos no Wokwi
 
+<img width="570" height="491" alt="image" src="https://github.com/user-attachments/assets/1389ca44-b46e-42c3-a018-24454805b3ba" />
+
 Cada projeto funciona com um sistema específico:
 
 ### ▶ Projeto funcional com Dashboard (Interface Web)
@@ -60,7 +62,7 @@ O esquema está disponível no Wokwi acima.
 
 ### 2. Configure o código do ESP32
 No início do código, ajustar:
-
+```
 WIFI, broker, client ID e tópicos FIWARE:
 
 const char* WIFI_SSID = "SeuWifi";
@@ -80,10 +82,13 @@ O ESP32:
 
 📤 Publica temperatura, umidade, presença, foco, distância e status  
 📥 Recebe comandos: **start**, **stop**, **pause**, **resume**
+```
 
 ---
 
 # 🖥 Parte 1 — Dashboard Web (Interface)
+
+<img width="545" height="646" alt="image" src="https://github.com/user-attachments/assets/ab811f74-8b93-4bd4-a0d6-2be6ef391b3a" />
 
 A interface lê dados diretamente do Orion:
 
@@ -91,11 +96,13 @@ GET http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014
 
 E filtra valores UL2.0 do tipo:
 
+```
 t|23.5  
 h|40.2  
 d|31.0  
 f|78  
 st|active
+```
 
 ### ✔ Como fazer o Dashboard funcionar
 
@@ -163,7 +170,7 @@ O dispositivo responde imediatamente.
 
 ### Dashboard faz:
 - Consulta Orion a cada 3s  
-- Remove prefixos UL (t|, h|, f|, …)  
+- Ajuda na sua rotina de estudos
 - Tradução de distância → presença  
 
 ### MyMQTT faz:
