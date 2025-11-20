@@ -39,22 +39,11 @@ Criar um dispositivo de mesa inteligente que:
 
 ---
 
-## 🔧 Esquema de montagem
+## 🔧 Projeto no Wokwi
 
-**Sensor / Atuador → Pino ESP32**
+<img width="579" height="533" alt="image" src="https://github.com/user-attachments/assets/fd336787-b91c-4648-b411-a111c46af3ec" />
 
-- DHT22 → GPIO15  
-- HC-SR04 TRIG → GPIO5  
-- HC-SR04 ECHO → GPIO18  
-- NeoPixel DIN → GPIO4  
-- Buzzer → GPIO19  
-- OLED I2C SDA → GPIO21  
-- OLED I2C SCL → GPIO22  
-
-**Imagens de referência (não são fotos do projeto):**  
-https://esp32io.com/images/tutorial/esp32-ultrasonic-sensor-piezo-buzzer-wiring-diagram.jpg  
-https://i0.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/05/ESP32_OLED.png  
-https://www.circuitschools.com/wp-content/uploads/2021/02/Circuit-Diagram-interfacing-OLED-display-with-ESP32.webp
+[![Abrir no Wokwi](https://img.shields.io/badge/▶%20Abrir%20no%20Wokwi-0A84FF?style=for-the-badge&logo=wokwi&logoColor=white)](https://wokwi.com/projects/448160488841329665)
 
 ---
 
