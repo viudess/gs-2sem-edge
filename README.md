@@ -1,6 +1,6 @@
 # 🧠 Pragma Focus Pod – Projeto IoT
 
-Este repositório contém o módulo de hardware e software do **Pragma Focus Pod**, uma extensão física da plataforma **Pragma – Otimizador de Rotina**, projetada para monitorar foco, presença, ambiente e sessões de trabalho/estudo.
+Este repositório contém o módulo de hardware e software do **Pragma Focus Pod**, uma extensão física da plataforma **Pragma – Otimizador de Carreira**, projetada para monitorar foco, presença, ambiente e sessões de trabalho/estudo.
 
 ---
 
