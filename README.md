@@ -126,13 +126,3 @@ Exemplos sugeridos:
 - Esquema elétrico real do circuito  
 
 ---
-
-## 📦 Estrutura do repositório
-
-/  
-├── esp32/            → Código do ESP32  
-├── interface/        → Dashboard Web  
-├── assets/           → Imagens do projeto  
-└── README.md         → Este arquivo
-
----
