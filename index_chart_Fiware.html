@@ -38,19 +38,26 @@
 
   <div class="card">Temperatura: <span id="temp">--</span> °C</div>
   <div class="card">Umidade: <span id="hum">--</span> %</div>
-  <div class="card">Presença: <span id="pres">--</span></div>
   <div class="card">Distância: <span id="dist">--</span> cm</div>
+  <div class="card">Presença: <span id="pres">--</span></div>
   <div class="card">Nível de Foco: <span id="focus">--</span> %</div>
   <div class="card">Status: <span id="status">--</span></div>
 
-  <button class="btn start" onclick="enviarComando('start_session')">Iniciar Sessão</button>
-  <button class="btn stop" onclick="enviarComando('end_session')">Encerrar Sessão</button>
+  <button class="btn start" onclick="enviarComando('start')">Iniciar Sessão</button>
+  <button class="btn stop" onclick="enviarComando('stop')">Encerrar Sessão</button>
 
   <script>
-    const URL = "http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014";
+    const URL_BASE = "http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014";
+
+    function cleanValue(raw) {
+      if (!raw) return null;
+      if (typeof raw !== "string") return raw;
+      const parts = raw.split("|");
+      return parts.length === 2 ? parts[1] : raw;
+    }
 
     function atualizarDados() {
-      fetch(URL, {
+      fetch(URL_BASE, {
         headers: {
           "Accept": "application/json",
           "Fiware-Service": "smart",
@@ -59,49 +66,58 @@
       })
       .then(r => r.json())
       .then(ent => {
-        const temp = ent.t?.value ?? "--";
-        const hum  = ent.h?.value ?? "--";
-        const dist = ent.d?.value ?? "--";
-        const focus = ent.f?.value ?? "--";
-        const status = ent.st?.value ?? "--";
 
-        document.getElementById("temp").textContent  = temp;
-        document.getElementById("hum").textContent   = hum;
-        document.getElementById("dist").textContent  = dist;
-        document.getElementById("focus").textContent = focus;
-        document.getElementById("status").textContent = status;
+        const temp  = cleanValue(ent.t?.value);
+        const hum   = cleanValue(ent.h?.value);
+        const dist  = cleanValue(ent.d?.value);
+        const focus = cleanValue(ent.f?.value);
+        const st    = cleanValue(ent.st?.value);
 
-        // === NOVA LÓGICA DE PRESENÇA (igual ao ESP32) ===
-        if (dist !== "--" && !isNaN(dist)) {
-          document.getElementById("pres").textContent =
-            (parseFloat(dist) < 40.0) ? "SIM" : "NÃO";
+        document.getElementById("temp").textContent  = temp ?? "--";
+        document.getElementById("hum").textContent   = hum ?? "--";
+        document.getElementById("dist").textContent  = dist ?? "--";
+        document.getElementById("focus").textContent = focus ?? "--";
+        document.getElementById("status").textContent = st ?? "--";
+
+        if (dist !== null && dist !== undefined && dist !== "--") {
+          const dnum = parseFloat(dist);
+          document.getElementById("pres").textContent = dnum < 40 ? "SIM" : "NÃO";
         } else {
           document.getElementById("pres").textContent = "--";
         }
+
       })
       .catch(e => console.log("Erro ao atualizar:", e));
     }
 
     function enviarComando(cmd) {
-      const body = {
-        [cmd]: { "type": "command", "value": "" }
-      };
-
-      fetch(URL + "/attrs", {
+      fetch("http://44.223.43.74:1026/v2/op/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Fiware-Service": "smart",
           "Fiware-ServicePath": "/"
         },
-        body: JSON.stringify(body)
-      })
-      .then(() => alert("Comando enviado: " + cmd))
-      .catch(e => alert("Erro ao enviar comando"));
+        body: JSON.stringify({
+          "actionType": "update",
+          "entities": [
+            {
+              "id": "urn:ngsi-ld:device:014",
+              "type": "device",
+              "cmd": {
+                "type": "command",
+                "value": cmd
+              }
+            }
+          ]
+        })
+      });
+
+      alert("Comando enviado: " + cmd);
     }
 
-    atualizarDados();
     setInterval(atualizarDados, 3000);
+    atualizarDados();
   </script>
 
 </body>
