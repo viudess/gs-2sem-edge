@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pragma Focus Pod - Dashboard</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #eef3f7;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { color: #333; }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 15px auto;
+      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      font-size: 20px;
+    }
+    .btn {
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .start { background: #27ae60; color: white; }
+    .stop { background: #c0392b; color: white; }
+  </style>
+</head>
+<body>
+
+  <h1>Pragma Focus Pod - Dashboard</h1>
+
+  <div class="card">Temperatura: <span id="temp">--</span> °C</div>
+  <div class="card">Umidade: <span id="hum">--</span> %</div>
+  <div class="card">Presença: <span id="pres">--</span></div>
+  <div class="card">Distância: <span id="dist">--</span> cm</div>
+  <div class="card">Nível de Foco: <span id="focus">--</span> %</div>
+  <div class="card">Status: <span id="status">--</span></div>
+
+  <button class="btn start" onclick="enviarComando('start')">Iniciar Sessão</button>
+  <button class="btn stop" onclick="enviarComando('stop')">Encerrar Sessão</button>
+
+  <script>
+    const URL_BASE = "http://44.223.43.74:1026/v2/entities/urn:ngsi-ld:device:014";
+
+    function atualizarDados() {
+      fetch(URL_BASE, {
+        headers: {
+          "Accept": "application/json",
+          "Fiware-Service": "smart",
+          "Fiware-ServicePath": "/"
+        }
+      })
+      .then(r => r.json())
+      .then(ent => {
+        document.getElementById("temp").textContent = ent.temperature?.value ?? "--";
+        document.getElementById("hum").textContent  = ent.humidity?.value ?? "--";
+        document.getElementById("pres").textContent = ent.present?.value ? "SIM" : "NÃO";
+        document.getElementById("dist").textContent = ent.distance?.value ?? "--";
+        document.getElementById("focus").textContent = ent.focus?.value ?? "--";
+        document.getElementById("status").textContent = ent.status?.value ?? "--";
+      })
+      .catch(e => console.log("Erro ao atualizar:", e));
+    }
+
+    function enviarComando(cmd) {
+      fetch(`${URL_BASE}/attrs`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Fiware-Service": "smart",
+          "Fiware-ServicePath": "/"
+        },
+        body: JSON.stringify({ [cmd]: { "type": "command", "value": "" } })
+      })
+      alert("Comando enviado: " + cmd);
+    }
+
+    setInterval(atualizarDados, 3000);
+    atualizarDados();
+  </script>
+
+</body>
+</html>
