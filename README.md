@@ -12,6 +12,15 @@ Este repositório contém o módulo de hardware e software do **Pragma Focus Pod
 
 ---
 
+## 🎥 Vídeo de Apresentação  
+Assista ao vídeo oficial do projeto no YouTube:
+
+[▶ **Pragma Focus Pod – Demonstração Completa**](https://youtu.be/gqSgp7ST5BM?si=AhyiyxKqdBGYKNhK)
+
+> Uma visão clara e objetiva sobre o funcionamento do dispositivo, seus sensores, integrações e demonstração prática.
+
+---
+
 ## 🎯 Objetivo
 
 Criar um dispositivo inteligente que:
